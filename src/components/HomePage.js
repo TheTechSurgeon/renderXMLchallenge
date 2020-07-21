@@ -46,7 +46,8 @@ const StyledButton = styled.button`
     background-color: #97AD4B;
     color: #F1F3F2;
     outline: none;
-    height: 40px;
+    height: 70px;
+
     font-size: large;
     &:hover{
         background-color: #F1F3F2;
@@ -71,24 +72,24 @@ const LogoutButton = styled.button`
     }
 `
 const CardHolder = styled.div`
-    border: 3px solid green;    
+      
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 100vh;
+    
     color: white;
 `
 
 const CardForm = styled.div`
-    border: 3px solid green;    
+       
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 100vh;
+    
     color: white;
 `
 const CardParent = styled.div`
-    border: 2px solid red;
+    
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -105,7 +106,7 @@ const Card = styled.div`
     margin: 1%;
     background-color: #444A45;
     border-radius: 5px;
-    border: 1px solid #c9cfca;
+    
     color: white;
     padding: 1%;
     box-shadow: 4px 4px rgba(151, 173, 75, 0.75);
@@ -205,7 +206,7 @@ const HomePage = () => {
                 
 
 
-            </CardForm>
+            
             
             <CardHolder>
                 <CardParent>{podcastList.map(unit => {
@@ -224,6 +225,7 @@ const HomePage = () => {
                     })}
                 </CardParent> */}
             </CardHolder>
+            </CardForm>
         </TestStyle>
     )
 }
