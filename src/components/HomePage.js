@@ -204,7 +204,7 @@ const HomePage = () => {
 
             </CardForm>
             
-            <CardHolder>
+            {/* <CardHolder>
                 <CardParent>{podcastList && podcastList.map(showPlant => {
                     
                     return(
@@ -215,7 +215,7 @@ const HomePage = () => {
                     </Card>
                     )
                 })}</CardParent>
-            </CardHolder>
+            </CardHolder> */}
         </TestStyle>
     )
 }
