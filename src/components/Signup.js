@@ -4,14 +4,14 @@ import axios from "axios"
 import { Link } from 'react-router-dom';
 //Styles
 import styled from "styled-components"
-import img from "../images/malte-wingen-PDX_a_82obo-unsplash.jpg"
+
 
 
 const TestStyle = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url(${img});
+   
     background-repeat: no-repeat;
     background-size: 100% 120vh;
     background-position: center;

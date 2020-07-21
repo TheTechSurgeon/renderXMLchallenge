@@ -20,7 +20,7 @@ const TestStyle = styled.div`
     background-size: 100% 120vh;
     background-position: center;
     max-width: 100%;
-    height: 100vh;
+    height: 300vh;
 `
 const MyHeader = styled.div`
     display: flex;
@@ -215,7 +215,7 @@ const HomePage = () => {
                     <Card key={unit.link}>
                         
                         <p>Title: {unit.title[0]}</p>
-                        <p>URL: {unit.link[0]}</p>
+                        <H2><a href={unit.link[0]} >Want the Cast?</a></H2>
                     </Card>
                     )
                 })}</CardParent>
