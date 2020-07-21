@@ -1,10 +1,13 @@
-import React, {useContext, useEffect} from "react"
+import React, {useContext, useEffect,useState} from "react"
 import {useHistory} from "react-router-dom"
 //Contexts
-import {HomeContext} from "../contexts/HomeContext"
+
 import { axiosWithAuth } from "../utils/axiosWithAuth"
 //Styles
 import styled from "styled-components"
+import Axios from "axios"
+const xml2js = require('xml2js')
+
 //import logo from "../images/company-logo.png"
 
 const TestStyle = styled.div`
@@ -73,6 +76,16 @@ const CardHolder = styled.div`
     justify-content: center;
     width: 100%;
     height: 100vh;
+    color: white;
+`
+
+const CardForm = styled.div`
+    border: 3px solid green;    
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    color: white;
 `
 const CardParent = styled.div`
     border: 2px solid red;
@@ -106,56 +119,103 @@ const ImageStyle = styled.img`
     background-color: #F1F3F2;
     box-shadow: 1px 1px lightgrey;
 `
+const Form = styled.form`
+    border: 1px solid #F1F3F2;
+    display: flex;
+    flex-direction: column;
+    jusity-content: center;
+    align-items: center;
+    width: 32%;
+    height: 70%;
+    background-color: #C9CFCA;
+    border-radius: 5px;
+    padding: 2% 0;
+    opacity: 95%;
+`
+const Input = styled.input`
+    outline: none;
+    border-radius: 3px;
+    margin-top:3vh;
+`
 
 const HomePage = () => {
-    const {podcastList, setPodcastList} = useContext(HomeContext)
+    const [podcastList, setPodcastList] = useState("")
+    const [podcastURL, setPodcastURL]= useState("")
     const {push} = useHistory()
+    
+
+    const getPodcast = () => {
+        Axios
+            .get(podcastURL)
+            .then(res => {
+
+            //for some reason I can't access xmlholder data directly from res, will fix this later TODO
+                let xmlHolder = res
+                const xmlData = xmlHolder.data
+                console.log(xmlData)
+                let parser = new xml2js.Parser();
+                parser.parseString(xmlData, { explicitArray : false },function (err, result){
+                    console.log(result)
+                    setPodcastList(JSON.stringify(result))
+                    
+                    
+                })
+                
+                
+            })
+            .catch(err => {
+                console.log("error getting podcasts", err.message)
+            })
+    }
+    
+    
+
+    const changeHandler = e => {
+        e.preventDefault()
+        setPodcastURL(e.target.value)
+    }
+//make my xml here
 
 
-    // useEffect(() => {
-    //     axiosWithAuth()
-    //         .get("/api/plants")
-    //         .then(res => {
-    //             setPlantList(res.data)
-    //         })
-    //         .catch(err => {
-    //             console.log("useEffect err", err)
-    //         })
-    // }, [])
-
+    //onSubmit={importPodcastList}
     return(
         <TestStyle>
             <MyHeader>
                 
-                <H2>Water My Plants</H2>
-                {/* <StyledButton onClick={() => push("/add-plant")}>Add Plant</StyledButton>
-                <LogoutButton onClick={() => push("/login")}>Log out</LogoutButton> */}
+                <H2>My Podcasts</H2>
+                
+                <LogoutButton onClick={() => push("/login")}>Log out</LogoutButton>
             </MyHeader>
+            <CardForm >
+                <h3>Enter URL Here</h3>
+                <label htmlFor="podurl">
+                <Input
+                id ="podurl"
+                name= "podurl"
+                value={podcastURL}
+                onChange={changeHandler}
+                
+                />
+                </label>
+                <StyledButton onClick={getPodcast}>Submit</StyledButton>
+
+                
+
+
+            </CardForm>
             
-            {/* <CardHolder>
-                <CardParent>{plantList && plantList.map(showPlant => {
-                    if(showPlant.image === null || ""){
-                        return (
-                        <Card key={showPlant.plant}>
-                            <ImageStyle src={"https://images.unsplash.com/photo-1453904300235-0f2f60b15b5d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=633&q=80"} alt="Potted green plant"/>
-                            <p>Nickname: {showPlant.nickname}</p>
-                            <p>Species: {showPlant.species}</p> 
-                            <p>Water Me: {showPlant.h2oFrequency}</p>
-                            <StyledButton onClick={() => push(`/update-plant/${showPlant.id}`)}>Update</StyledButton>
-                        </Card>
-                        )
-                    }
+            <CardHolder>
+                <CardParent>{podcastList && podcastList.map(showPlant => {
+                    
                     return(
-                    <Card key={showPlant.plant}>
-                        <ImageStyle src={showPlant.image} alt={showPlant.species} />
-                        <p>Nickname: {showPlant.nickname}</p>
-                        <p>Species: {showPlant.species}</p> 
-                        <p>Water Me: {showPlant.h2oFrequency}</p>
-                        <StyledButton onClick={() => push(`/update-plant/${showPlant.id}`)}>Update</StyledButton>
+                    <Card key={podcastList.podcast}>
+                        <ImageStyle src={podcastList.img}  />
+                        <p>Title: {podcastList.description}</p>
+                        <p>Decscription: {podcastList.category}</p> 
                     </Card>
                     )
                 })}</CardParent>
-            </CardHolder> */}
+            </CardHolder>
         </TestStyle>
     )
 }
