@@ -20,7 +20,7 @@ const TestStyle = styled.div`
     background-size: 100% 120vh;
     background-position: center;
     max-width: 100%;
-    height: 100vh;
+    height: 300vh;
 `
 const MyHeader = styled.div`
     display: flex;
@@ -46,7 +46,8 @@ const StyledButton = styled.button`
     background-color: #97AD4B;
     color: #F1F3F2;
     outline: none;
-    height: 40px;
+    height: 70px;
+
     font-size: large;
     &:hover{
         background-color: #F1F3F2;
@@ -71,24 +72,24 @@ const LogoutButton = styled.button`
     }
 `
 const CardHolder = styled.div`
-    border: 3px solid green;    
+      
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 100vh;
+    
     color: white;
 `
 
 const CardForm = styled.div`
-    border: 3px solid green;    
+       
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 100vh;
+    
     color: white;
 `
 const CardParent = styled.div`
-    border: 2px solid red;
+    
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -105,8 +106,8 @@ const Card = styled.div`
     margin: 1%;
     background-color: #444A45;
     border-radius: 5px;
-    border: 1px solid #c9cfca;
-    color: #f1f3f2;
+    
+    color: white;
     padding: 1%;
     box-shadow: 4px 4px rgba(151, 173, 75, 0.75);
 `
@@ -139,7 +140,7 @@ const Input = styled.input`
 `
 
 const HomePage = () => {
-    const [podcastList, setPodcastList] = useState("")
+    const [podcastList, setPodcastList] = useState([])
     const [podcastURL, setPodcastURL]= useState("")
     const {push} = useHistory()
     
@@ -152,12 +153,15 @@ const HomePage = () => {
             //for some reason I can't access xmlholder data directly from res, will fix this later TODO
                 let xmlHolder = res
                 const xmlData = xmlHolder.data
-                console.log(xmlData)
+                
                 let parser = new xml2js.Parser();
-                parser.parseString(xmlData, { explicitArray : false },function (err, result){
-                    console.log(result)
-                    setPodcastList(JSON.stringify(result))
-                    
+                
+
+                parser.parseString(xmlData,function (err, result){
+                   
+                    console.log(result.rss.channel[0].item)
+                    setPodcastList(result.rss.channel[0].item)
+
                     
                 })
                 
@@ -202,20 +206,26 @@ const HomePage = () => {
                 
 
 
-            </CardForm>
             
-            {/* <CardHolder>
-                <CardParent>{podcastList && podcastList.map(showPlant => {
-                    
+            
+            <CardHolder>
+                <CardParent>{podcastList.map(unit => {
+                    console.log(unit)
                     return(
-                    <Card key={podcastList.podcast}>
-                        <ImageStyle src={podcastList.img}  />
-                        <p>Title: {podcastList.description}</p>
-                        <p>Decscription: {podcastList.category}</p> 
+                    <Card key={unit.link}>
+                        
+                        <p>Title: {unit.title[0]}</p>
+                        <H2><a href={unit.link[0]} >Want the Cast?</a></H2>
                     </Card>
                     )
                 })}</CardParent>
-            </CardHolder> */}
+                {/* <CardParent>
+                    {podcastList[0].item.map(unit=>{
+                        console.log(unit)
+                    })}
+                </CardParent> */}
+            </CardHolder>
+            </CardForm>
         </TestStyle>
     )
 }
